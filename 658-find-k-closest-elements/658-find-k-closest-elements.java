@@ -24,3 +24,9 @@ class Solution {
         
     }
 }
+
+We can initialize two pointers L=0 and R=n-1. 
+Now our window size is n and contains excess elements. 
+We will keep reducing the [L, R] window size till it becomes exactly equal to k. 
+We can do this based on the condition - x - arr[L] <= arr[R] - x. 
+If it is true, then it means arr[R] is farther away from x than arr[L] and thus we will eliminate arr[R]. Otherwise, we will eliminate arr[L].
