@@ -1,17 +1,12 @@
 class Solution {
     public boolean check(int[] nums) {
         
-        int k = 0;
-        int n = nums.length;
-        
-        for(int i =1; i < n; i++){
-            
-            if(nums[i-1] > nums[i])
-                k++;
-            
-            if(k > 1) return false;
+        int n = nums.length, dropPoint = 0;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] < nums[i - 1]) dropPoint++;
         }
-        
-       return ((k == 1 && nums[0] >= nums[n-1] || k == 0) ? true : false);
+        if (dropPoint == 0) return true;
+        if (dropPoint == 1 && nums[0] >= nums[n - 1]) return true;
+        return false;
     }
 }
