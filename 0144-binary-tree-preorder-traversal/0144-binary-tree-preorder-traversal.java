@@ -20,8 +20,8 @@ class Solution {
         
         if(root == null) return result;
     
-        stack.push(root);
-        while(!stack.isEmpty()){
+        
+        while(root != null || stack.size() > 0){
             
             while(root != null){
                 result.add(root.val);
