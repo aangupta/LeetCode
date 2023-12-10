@@ -1,34 +1,31 @@
 class Solution {
-    /*Memoization*/
-    private int helper(int row, int col, int[][] grid, int[][] path) {
-        //base case
-        if(row < 0 || col < 0) return Integer.MAX_VALUE;
-        
-        if(row == 0 && col == 0) return grid[0][0];
-        
-        if(path[row][col] != -1)
-            return path[row][col];
-            
-        
-        int up = Integer.MAX_VALUE;
-        if(row - 1 >= 0)
-            up = Math.min(up, helper(row - 1, col, grid, path));
-        
-        int left = Integer.MAX_VALUE;
-        if(col - 1 >= 0)
-            left = Math.min(left, helper(row, col-1, grid,path));
-        
-        return path[row][col] = grid[row][col] + Math.min(up, left);
-    }
+    /*Tabulation*/
+   
     public int minPathSum(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
         
         int[][] path = new int[m][n];
-        for(int[] row : path){
-            Arrays.fill(row, -1);
+       
+        //base case
+        path[0][0] = grid[0][0];
+        
+        //for first row
+        for(int i = 1; i < n; i++){
+            path[0][i] = grid[0][i] + path[0][i-1];
         }
         
-        return helper(m-1, n-1, grid, path);
+        //for first col
+        for(int i = 1; i < m; i++){
+            path[i][0] = grid[i][0] + path[i-1][0];
+        }
+        
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                path[i][j] = grid[i][j] + Math.min(path[i-1][j], path[i][j-1]);
+            }
+        }
+        
+        return path[m-1][n-1];
     }
 }
