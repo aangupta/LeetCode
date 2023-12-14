@@ -15,6 +15,13 @@
  */
 class Solution {
     
+    /*
+    * Find the inorder traversal of the BST and store it in array(sorted array)
+    * Apply two sum approach to check if there exist two element whose sum equals to k
+    * TC O(n)(finding the inorder traversal) + O(n)(traversing the inorder array to check there exist two element whose sum equals to k ) ~ O(n)
+    * SC O(n) - inorder array
+    */
+    
     private void inorderTraversal(TreeNode root, List<Integer> inorder) {
         
         if(root == null) return;
