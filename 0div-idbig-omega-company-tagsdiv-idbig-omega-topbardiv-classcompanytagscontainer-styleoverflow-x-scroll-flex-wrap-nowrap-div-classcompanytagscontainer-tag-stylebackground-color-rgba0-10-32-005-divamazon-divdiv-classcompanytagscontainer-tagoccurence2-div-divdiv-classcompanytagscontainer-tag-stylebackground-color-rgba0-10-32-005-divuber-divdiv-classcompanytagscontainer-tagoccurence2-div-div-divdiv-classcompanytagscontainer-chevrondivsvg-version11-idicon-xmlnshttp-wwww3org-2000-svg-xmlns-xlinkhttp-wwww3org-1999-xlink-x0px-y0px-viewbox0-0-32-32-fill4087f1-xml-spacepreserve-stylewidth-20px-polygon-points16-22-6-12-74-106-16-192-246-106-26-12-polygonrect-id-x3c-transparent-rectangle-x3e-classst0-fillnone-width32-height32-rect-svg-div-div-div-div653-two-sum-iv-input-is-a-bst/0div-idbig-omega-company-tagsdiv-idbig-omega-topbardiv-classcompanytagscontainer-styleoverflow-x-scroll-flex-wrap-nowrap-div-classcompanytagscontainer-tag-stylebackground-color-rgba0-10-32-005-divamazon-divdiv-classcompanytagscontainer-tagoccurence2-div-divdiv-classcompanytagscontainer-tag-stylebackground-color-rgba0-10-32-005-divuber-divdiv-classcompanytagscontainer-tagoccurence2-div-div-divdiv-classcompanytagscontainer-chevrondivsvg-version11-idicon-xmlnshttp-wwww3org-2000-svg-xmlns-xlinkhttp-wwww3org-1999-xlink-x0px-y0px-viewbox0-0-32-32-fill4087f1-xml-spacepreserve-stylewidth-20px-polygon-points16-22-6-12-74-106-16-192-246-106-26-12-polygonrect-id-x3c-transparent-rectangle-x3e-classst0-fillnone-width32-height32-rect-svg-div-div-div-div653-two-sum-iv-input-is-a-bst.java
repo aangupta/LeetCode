@@ -15,44 +15,70 @@
  */
 class Solution {
     
-    /*
-    * Find the inorder traversal of the BST and store it in array(sorted array)
-    * Apply two sum approach to check if there exist two element whose sum equals to k
-    * TC O(n)(finding the inorder traversal) + O(n)(traversing the inorder array to check there exist two element whose sum equals to k ) ~ O(n)
-    * SC O(n) - inorder array
-    */
+    private TreeNode findSuccessor(TreeNode root, TreeNode node) {
+        TreeNode successor = null;
+        TreeNode curr = root;
+        
+        while(curr != null) {
+            
+            if(curr.val > node.val) {
+                successor = curr;
+                curr = curr.left;
+            }
+            else {
+                curr = curr.right;
+            }
+        }
+        
+        return successor;
+            
+    }
     
-    private void inorderTraversal(TreeNode root, List<Integer> inorder) {
+    private TreeNode findPredecessor(TreeNode root, TreeNode node) {
+        TreeNode predecessor = null;
+        TreeNode curr = root;
         
-        if(root == null) return;
-        
-        inorderTraversal(root.left, inorder);
-        
-        inorder.add(root.val);
-         
-        inorderTraversal(root.right, inorder);
-        
-        
+        while(curr != null) {
+            if(curr.val < node.val) {
+                predecessor = curr;
+                curr = curr.right;
+            }
+            else 
+                curr = curr.left;
+        }
+        return predecessor;
     }
     public boolean findTarget(TreeNode root, int k) {
-        List<Integer> inorder = new ArrayList<>();
+        if(root == null) return false;
         
-        inorderTraversal(root, inorder);
+        TreeNode start = root;
+        TreeNode end = root;
         
-        int start = 0;
-        int end = inorder.size() - 1;
+
+        while(start.left != null){
+            start = start.left;
+        }
         
-        while(start < end) {
-            int sum = inorder.get(start) + inorder.get(end);
+        while(end.right != null){
+            end = end.right;
+        }
+        
+        while(start != end) {
             
-            if(sum == k) 
-                return true;
-            else if(sum > k)
-                end--;
-            else 
-                start++;
+            int sum = start.val + end.val;
+            
+            if(sum == k) return true;
+            
+            else if(sum < k) {
+                start = findSuccessor(root, start);
+            }
+            else {
+                end = findPredecessor(root, end);
+            }
+            
         }
         
         return false;
+        
     }
 }
