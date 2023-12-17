@@ -14,19 +14,31 @@
  * }
  */
 class Solution {
-    //Recursive
-    private void postorderTraversalUtils(TreeNode root, List<Integer> result) {
-        if(root == null)
-            return;
-        postorderTraversalUtils(root.left, result);
-        postorderTraversalUtils(root.right, result);
-        result.add(root.val);
-    }
+    //Iterative
     public List<Integer> postorderTraversal(TreeNode root) {
         
         List<Integer> result = new ArrayList<>();
         if(root == null) return result;
-        postorderTraversalUtils(root, result);
+        
+        ArrayDeque<TreeNode> stack1 = new ArrayDeque<>();
+        ArrayDeque<TreeNode> stack2 = new ArrayDeque<>();
+        
+        stack1.push(root);
+        
+        while(stack1.size() > 0){
+            root = stack1.pop();
+            stack2.push(root);
+            
+            if(root.left != null) stack1.push(root.left);
+            if(root.right != null) stack1.push(root.right);
+            
+        }
+        
+        while(stack2.size() > 0){
+            result.add(stack2.pop().val);
+        }
+        
         return result;
+        
     }
 }
