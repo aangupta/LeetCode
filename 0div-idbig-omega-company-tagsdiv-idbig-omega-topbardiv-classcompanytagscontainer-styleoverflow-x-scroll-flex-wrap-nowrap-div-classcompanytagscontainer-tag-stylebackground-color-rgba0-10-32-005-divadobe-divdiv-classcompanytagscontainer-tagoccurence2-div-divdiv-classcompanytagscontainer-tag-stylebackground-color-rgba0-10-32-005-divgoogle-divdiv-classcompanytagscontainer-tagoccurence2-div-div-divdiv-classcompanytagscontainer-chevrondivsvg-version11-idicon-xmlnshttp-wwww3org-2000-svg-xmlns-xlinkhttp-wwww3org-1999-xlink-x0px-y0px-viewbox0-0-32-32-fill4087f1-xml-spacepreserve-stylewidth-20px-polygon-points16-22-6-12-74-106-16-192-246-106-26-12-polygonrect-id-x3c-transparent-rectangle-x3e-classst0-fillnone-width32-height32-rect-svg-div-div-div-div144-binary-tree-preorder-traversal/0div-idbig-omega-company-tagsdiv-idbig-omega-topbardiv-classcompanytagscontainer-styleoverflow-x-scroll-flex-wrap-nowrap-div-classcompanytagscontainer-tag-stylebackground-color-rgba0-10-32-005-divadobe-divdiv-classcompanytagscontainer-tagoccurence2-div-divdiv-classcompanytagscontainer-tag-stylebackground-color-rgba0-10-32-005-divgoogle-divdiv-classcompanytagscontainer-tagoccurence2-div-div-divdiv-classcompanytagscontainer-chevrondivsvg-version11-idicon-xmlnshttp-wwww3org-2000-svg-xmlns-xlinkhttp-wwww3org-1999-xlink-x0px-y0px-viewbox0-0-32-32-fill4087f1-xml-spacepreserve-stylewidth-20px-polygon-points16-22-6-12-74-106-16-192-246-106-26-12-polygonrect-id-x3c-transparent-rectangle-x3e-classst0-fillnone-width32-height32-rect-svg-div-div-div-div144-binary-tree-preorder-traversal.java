@@ -14,22 +14,26 @@
  * }
  */
 class Solution {
-    //Recursive
-    private void preorderTraversalUtils(TreeNode root,  List<Integer> result) {
-        if(root == null)
-            return;
-        result.add(root.val);
-        
-        preorderTraversalUtils(root.left, result);
-        preorderTraversalUtils(root.right, result);
-    }
+    //Iterative
     public List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
         
-        if(root == null)
-            return result;
+        ArrayList<Integer> result = new ArrayList<>();
+        ArrayDeque<TreeNode> stack = new ArrayDeque<>();
         
-        preorderTraversalUtils(root, result);
+        if(root == null) return result;
+        
+        while(root != null || stack.size() > 0) {
+            while(root != null){
+                result.add(root.val);
+                stack.push(root);
+                root = root.left;
+            }
+            
+            root = stack.pop();
+            root = root.right;
+        }
+        
         return result;
+        
     }
 }
