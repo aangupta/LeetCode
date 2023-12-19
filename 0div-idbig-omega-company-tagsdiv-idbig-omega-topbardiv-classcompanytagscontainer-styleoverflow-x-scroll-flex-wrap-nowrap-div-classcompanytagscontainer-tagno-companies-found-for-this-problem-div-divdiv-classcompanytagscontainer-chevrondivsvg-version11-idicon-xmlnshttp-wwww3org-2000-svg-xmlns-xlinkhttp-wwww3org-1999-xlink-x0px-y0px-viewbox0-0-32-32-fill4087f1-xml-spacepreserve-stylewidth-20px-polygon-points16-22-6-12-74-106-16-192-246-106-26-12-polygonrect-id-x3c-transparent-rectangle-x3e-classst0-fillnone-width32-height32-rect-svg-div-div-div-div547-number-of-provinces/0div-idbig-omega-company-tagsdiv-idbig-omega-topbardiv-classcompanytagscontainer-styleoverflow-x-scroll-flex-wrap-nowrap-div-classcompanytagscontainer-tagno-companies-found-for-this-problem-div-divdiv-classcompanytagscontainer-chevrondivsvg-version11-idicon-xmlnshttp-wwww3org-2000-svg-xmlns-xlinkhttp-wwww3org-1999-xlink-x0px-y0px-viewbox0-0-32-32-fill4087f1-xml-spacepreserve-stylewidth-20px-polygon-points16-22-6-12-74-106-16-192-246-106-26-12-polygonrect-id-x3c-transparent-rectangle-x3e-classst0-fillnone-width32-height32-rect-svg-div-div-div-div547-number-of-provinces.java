@@ -1,14 +1,24 @@
 class Solution {
     /*Idea is to find no of connected component*/
-    //dfs solution
-    private void dfs(int node, int[] visited, int[][] isConnected) {
-        visited[node] = 1;
+    //bfs solution
+    private void bfs(int node, int[] visited, int[][] isConnected) {
+       Queue<Integer> queue = new LinkedList<>();
         
-        for(int i = 0; i < isConnected[node].length; i++){
-            if(isConnected[node][i] == 1 && visited[i] == 0){
-                dfs(i, visited, isConnected);
+        visited[node] = 1;
+        queue.add(node);
+        
+        while(queue.size() > 0) {
+            int currNode = queue.remove();
+
+            //traversing through the adjacent nodes
+            for(int i = 0; i < isConnected[currNode].length; i++){
+                if(isConnected[currNode][i] == 1 && visited[i] == 0) {
+                    queue.add(i);
+                    visited[i] = 1;
+                }
             }
         }
+        
     }
     public int findCircleNum(int[][] isConnected) {
         int noOfProvinces = 0;
@@ -19,7 +29,7 @@ class Solution {
         for(int i = 0; i < vertices; i++){
             if(visited[i] == 0){
                 noOfProvinces++;
-                dfs(i, visited, isConnected);
+                bfs(i, visited, isConnected);
             }
         }
         
