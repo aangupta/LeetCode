@@ -1,6 +1,21 @@
 class Solution {
-    // adjacency list + bfs
+    // adjacency list + dfs
     //TC 0(V+E) 
+    
+    private boolean dfs(int n, ArrayList<ArrayList<Integer>> adjList, int source, int destination, int[] visited) {
+        
+        visited[source] = 1;
+        
+        if(source == destination) return true;
+        
+        for(int neighbour : adjList.get(source)) {
+            if(visited[neighbour] == 0 && dfs(n,adjList, neighbour, destination, visited))
+                return true;
+        }
+        
+        return false;
+        
+    }
     public boolean validPath(int n, int[][] edges, int source, int destination) {
         
         //creating adjList from the given edges array
@@ -20,30 +35,6 @@ class Solution {
         
         int[] visited = new int[n];
         
-        Queue<Integer> queue = new LinkedList<>();
-        
-        //adding the source node to queue and marking it visited
-        queue.add(source);
-        visited[source] = 1;
-        
-        while(queue.size() > 0) {
-            
-            int currNode = queue.peek();
-            queue.remove();
-            
-              if(currNode == destination) return true;
-            
-            //checking all the adj nodes of the current node, if not visited mark it visited and add it to queue
-            for(int adjNode : adjList.get(currNode)) {
-                if(visited[adjNode] == 0) {
-                    visited[adjNode] = 1;
-                    queue.add(adjNode);
-                }
-            }
-        }
-        
-       
-        return false;
-        
+        return dfs(n, adjList, source, destination, visited);
     }
 }
