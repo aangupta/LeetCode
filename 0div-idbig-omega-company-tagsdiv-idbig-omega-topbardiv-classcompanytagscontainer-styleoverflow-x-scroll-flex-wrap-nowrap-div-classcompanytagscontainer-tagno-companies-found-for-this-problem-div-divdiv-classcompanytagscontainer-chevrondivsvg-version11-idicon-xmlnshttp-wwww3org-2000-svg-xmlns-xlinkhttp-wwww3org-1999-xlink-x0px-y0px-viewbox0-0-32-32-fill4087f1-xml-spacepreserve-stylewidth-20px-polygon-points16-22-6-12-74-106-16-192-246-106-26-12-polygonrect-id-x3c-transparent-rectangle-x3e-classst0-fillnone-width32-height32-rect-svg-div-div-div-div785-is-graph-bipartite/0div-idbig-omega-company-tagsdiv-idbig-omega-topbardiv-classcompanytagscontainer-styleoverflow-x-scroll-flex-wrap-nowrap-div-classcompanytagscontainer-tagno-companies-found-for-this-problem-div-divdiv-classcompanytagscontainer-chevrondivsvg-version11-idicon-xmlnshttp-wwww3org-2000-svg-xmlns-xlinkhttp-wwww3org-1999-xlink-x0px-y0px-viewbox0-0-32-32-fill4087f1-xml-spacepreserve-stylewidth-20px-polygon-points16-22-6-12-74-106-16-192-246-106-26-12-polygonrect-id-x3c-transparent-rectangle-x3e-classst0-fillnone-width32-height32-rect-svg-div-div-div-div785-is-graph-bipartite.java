@@ -1,31 +1,26 @@
 class Solution {
 
-    //BFS
     private boolean isBipartiteUtils(int start, int currColor, int[][] graph, int[] color) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(start);
         color[start] = currColor;
-        
-        while(queue.size() > 0) {
-            int node = queue.peek();
-            queue.remove();
-            
-            for(int neighbour : graph[node]) {
-                //if adjacent node is not yet color,
-                //we need to give opposite color to the adjacent node as compared to the current node
-                if(color[neighbour] == -1) {
-                    color[neighbour] = 1 - color[node];
-                    queue.add(neighbour);
-                }
-                //if adjacent node is of same color as the current node
-                //that means that the someother node might have colored it on some different path
-                else if(color[neighbour] == color[node]) {
-                    return false;
-                }
+
+        for (int i = 0; i < graph[start].length; i++) {
+            //if adjacent node is not yet color,
+            //we need to give opposite color to the adjacent node as compared to the current node
+            int neighbour = graph[start][i];
+
+            if (color[neighbour] == -1) {
+                if (isBipartiteUtils(neighbour, 1 - currColor, graph, color) == false) return false;
+            }
+            //if adjacent node is of same color as the current node
+            //that means that the someother node might have colored it on some different path
+            else if (color[neighbour] == currColor) {
+                return false;
             }
         }
+
         return true;
     }
+
     public boolean isBipartite(int[][] graph) {
         int vertices = graph.length;
         int[] color = new int[vertices];
