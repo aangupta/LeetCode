@@ -6,19 +6,29 @@ class Solution {
     int[] dx = new int[]{0, -1, 0, 1};
     int[] dy = new int[]{-1, 0, 1, 0};
     
-    private void dfs(int row, int col, int[][] grid, int[][] visited) {
+    private void bfs(int row, int col, int[][] grid, int[][] visited) {
         
         int nRows = grid.length;
         int nCols = grid[0].length;
         
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] {row, col});
         visited[row][col] = 1;
         
-        for(int i = 0; i < 4; i++) {
-            int newRow = row + dx[i];
-            int newCol = col + dy[i];
+        while(queue.size() > 0) {
+            int[] cell = queue.peek();
+            queue.remove();
             
-            if(newRow >= 0 && newRow < nRows && newCol >= 0 && newCol < nCols && grid[newRow][newCol] == 0 && visited[newRow][newCol] == 0)
-                dfs(newRow, newCol, grid, visited);
+            for(int i = 0; i < 4; i++) {
+                int newRow = cell[0] + dx[i];
+                int newCol = cell[1] + dy[i];
+
+                if(newRow >= 0 && newRow < nRows && newCol >= 0 && newCol < nCols && grid[newRow][newCol] == 0 && visited[newRow][newCol] == 0){
+                    visited[newRow][newCol] = 1;
+                    queue.add(new int[]{newRow, newCol});
+                }
+                   
+            }
         }
         
     }
@@ -33,7 +43,7 @@ class Solution {
             for(int j = 0; j < nCols; j++) {
                 if(i == 0 || i == nRows-1 || j == 0 || j == nCols-1) { //boundary lands
                     if(grid[i][j] == 0 && visited[i][j] == 0){
-                        dfs(i,j,grid,visited);
+                        bfs(i,j,grid,visited);
                     }
                 }
             }
@@ -45,7 +55,7 @@ class Solution {
             for(int j = 0; j < nCols; j++) {
                 if(grid[i][j] == 0 && visited[i][j] == 0){
                     count++; //new closed island
-                    dfs(i,j,grid,visited);
+                    bfs(i,j,grid,visited);
                 }
             }
         }
