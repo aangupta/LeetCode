@@ -1,26 +1,34 @@
 class Solution {
-    private void dfs(int currNum, int n, int k, List<Integer> res ) {
-        if(n == 0) {
-            res.add(currNum);
-            return;
-        }
-        
-        int lastDigit = currNum % 10;
-        
-         //if k == 0, we will be having duplicate numbers from both the dfs calls, so need to discard one dfs call
-        if(lastDigit + k <= 9)
-            dfs(currNum * 10 +lastDigit + k, n-1, k, res);
-       
-        if(k != 0 && lastDigit - k >= 0)
-            dfs(currNum * 10 +lastDigit - k, n-1, k, res);
-    }
-    
     public int[] numsSameConsecDiff(int n, int k) {
         List<Integer> res = new ArrayList<>();
+        Queue<int[]> queue = new LinkedList<>();
         
         //discarding 0 as integers should not have leading zeros
         for(int i = 1; i <=9 ; i++) {
-            dfs(i, n-1, k, res);
+           queue.add(new int[]{i,1});
+        }
+        
+        
+        while(queue.size() > 0) {
+            int[] val = queue.peek();
+            queue.remove();
+            
+            int num = val[0];
+            int len = val[1];
+            
+            if(len == n){
+                res.add(num);
+                continue;
+            }
+            
+            int lastDigit = num % 10;
+            
+            if(lastDigit + k <= 9) 
+                queue.add(new int[]{10 * num +lastDigit + k, len + 1});
+            
+            if(k != 0 && lastDigit - k >= 0)
+                 queue.add(new int[]{10 * num +lastDigit - k, len + 1});
+            
         }
         
         int[] nums = new int[res.size()];
