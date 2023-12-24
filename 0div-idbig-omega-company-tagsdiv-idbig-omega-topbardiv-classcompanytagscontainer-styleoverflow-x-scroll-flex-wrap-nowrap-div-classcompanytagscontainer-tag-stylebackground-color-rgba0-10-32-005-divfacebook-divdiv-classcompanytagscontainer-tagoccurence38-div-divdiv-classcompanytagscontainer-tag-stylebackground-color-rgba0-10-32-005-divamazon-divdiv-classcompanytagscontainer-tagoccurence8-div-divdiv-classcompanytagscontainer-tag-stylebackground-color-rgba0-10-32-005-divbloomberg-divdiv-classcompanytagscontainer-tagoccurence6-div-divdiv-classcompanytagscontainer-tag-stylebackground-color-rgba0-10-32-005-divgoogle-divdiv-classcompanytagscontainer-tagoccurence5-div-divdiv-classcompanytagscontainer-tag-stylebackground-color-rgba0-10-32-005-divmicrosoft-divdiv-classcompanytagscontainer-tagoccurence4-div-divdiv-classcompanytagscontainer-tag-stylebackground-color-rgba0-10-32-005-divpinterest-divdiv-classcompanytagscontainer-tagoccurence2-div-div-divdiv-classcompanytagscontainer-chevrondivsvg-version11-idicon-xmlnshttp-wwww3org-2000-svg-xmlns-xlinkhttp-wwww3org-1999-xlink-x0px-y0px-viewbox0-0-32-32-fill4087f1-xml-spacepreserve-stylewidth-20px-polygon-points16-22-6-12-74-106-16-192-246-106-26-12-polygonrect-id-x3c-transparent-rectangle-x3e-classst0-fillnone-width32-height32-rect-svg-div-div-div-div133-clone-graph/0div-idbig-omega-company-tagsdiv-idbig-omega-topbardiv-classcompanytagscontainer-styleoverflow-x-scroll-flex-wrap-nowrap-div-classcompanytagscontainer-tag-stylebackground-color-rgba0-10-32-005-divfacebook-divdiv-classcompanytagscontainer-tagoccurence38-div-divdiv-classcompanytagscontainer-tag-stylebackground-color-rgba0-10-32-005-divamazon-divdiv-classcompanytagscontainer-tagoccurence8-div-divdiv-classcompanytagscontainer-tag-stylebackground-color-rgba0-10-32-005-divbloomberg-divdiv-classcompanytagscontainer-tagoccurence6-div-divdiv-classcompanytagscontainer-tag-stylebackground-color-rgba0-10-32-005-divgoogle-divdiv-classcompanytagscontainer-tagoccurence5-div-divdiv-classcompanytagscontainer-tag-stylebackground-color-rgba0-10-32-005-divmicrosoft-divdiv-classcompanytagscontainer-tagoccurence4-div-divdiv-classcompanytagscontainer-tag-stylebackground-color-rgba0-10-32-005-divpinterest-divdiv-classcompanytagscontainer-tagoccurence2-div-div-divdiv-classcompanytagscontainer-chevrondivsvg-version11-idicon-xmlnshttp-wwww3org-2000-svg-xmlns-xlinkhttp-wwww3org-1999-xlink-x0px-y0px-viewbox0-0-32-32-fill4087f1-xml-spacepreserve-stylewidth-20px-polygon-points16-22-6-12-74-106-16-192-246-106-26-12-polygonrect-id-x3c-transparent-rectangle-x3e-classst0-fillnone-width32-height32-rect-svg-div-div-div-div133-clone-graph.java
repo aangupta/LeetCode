@@ -19,32 +19,25 @@ class Node {
 */
 
 class Solution {
-
-    public Node cloneGraph(Node node) {
+    
+    private Node cloneGraphUtils(Node node,  Map<Node, Node> map) {
         if(node == null) return null;
         
-        // Maps a node from original graph to the corresponding node in the cloned graph.
-        Map<Node, Node> map = new HashMap<>();
-        Queue<Node> queue = new LinkedList<>();
+        if(map.containsKey(node) == true)
+            return map.get(node);
         
-        queue.add(node);
-        map.put(node, new Node(node.val));
+        Node copyNode = new Node(node.val);
+        map.put(node, copyNode);
         
-        while(queue.size() > 0) {
-            Node currNode = queue.peek();
-            queue.remove();
-            
-            //traversing through the neighbours
-            for(Node  currNeighbor : currNode.neighbors) {
-                if(map.containsKey(currNeighbor) == false) {
-                     map.put(currNeighbor, new Node(currNeighbor.val)); // Create a copy of currNeighbor.
-                     queue.add(currNeighbor); // Add currNeighbor to the queue so that its edges will be added to the cloned graph.
-                }
-                
-                map.get(currNode).neighbors.add(map.get(currNeighbor)); // Create the edge between currNode and the currNeighbor in the cloned graph.
-            }
+        for(Node neighbor : node.neighbors) {
+            map.get(node).neighbors.add(cloneGraphUtils(neighbor, map));
         }
         
-       return map.get(node);
+        return copyNode;
+    }
+    public Node cloneGraph(Node node) {
+        Map<Node, Node> map = new HashMap<>();
+        
+        return cloneGraphUtils(node, map);
     }
 }
