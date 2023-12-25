@@ -53,49 +53,50 @@ class DriverClass
 
 
 //User function Template for Java
-
 class Pair {
     int node;
-    int distance;
-    Pair(int node, int distance){
-        this.node = node;
-        this.distance = distance;
-        
-    }
+    int dist;
     
+    Pair(int node, int dist) {
+        this.node = node;
+        this.dist = dist;
+    }
 }
+
 class Solution
 {
     //Function to find the shortest distance of all the vertices
     //from the source vertex S.
     static int[] dijkstra(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S)
     {
-       PriorityQueue<Pair> pq = new PriorityQueue<>((x,y) -> (x.distance - y.distance));
-       int[] distance = new int[V];
-       for(int i = 0; i < V; i++){
-           distance[i] = (int)1e9;
-       }
+        //stores the shortest distance from source node to other nodes
+        int[] distance = new int[V];
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        
+        PriorityQueue<Pair> pq = new PriorityQueue<>((x,y) -> x.dist - y.dist);
+        pq.add(new Pair(S, 0));
+        distance[S] = 0;
+        
+        while(pq.size() > 0) {
+            Pair it = pq.peek();
+            //System.out.println(it.node + " " + it.dist);
+            pq.poll();
+            int currNode = it.node;
+            int currNodeDist = it.dist;
+            
+            for(ArrayList<Integer> neighbor : adj.get(currNode)) {
+                int adjNode = neighbor.get(0);
+                int edgeW = neighbor.get(1);
+                
+                if(distance[adjNode] > distance[currNode] + edgeW){
+                    distance[adjNode] = distance[currNode] + edgeW;
+                    pq.add(new Pair(adjNode, distance[adjNode]));
+                }
+            }
+        }
+        
+        return distance;
        
-       pq.add(new Pair(S, 0));
-       distance[S] = 0;
-       
-       while(pq.size() > 0){
-           int node = pq.peek().node;
-           int dis = pq.peek().distance;
-           
-           pq.remove();
-           for(int i = 0; i < adj.get(node).size(); i++){
-               int adjNode = adj.get(node).get(i).get(0);
-               int edgeWeight = adj.get(node).get(i).get(1);
-               
-               if(dis + edgeWeight < distance[adjNode]){
-                   distance[adjNode] = dis + edgeWeight;
-                   pq.add(new Pair(adjNode, distance[adjNode]));
-               }
-           }
-       }
-       
-       return distance;
     }
 }
 
