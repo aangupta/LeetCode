@@ -1,67 +1,30 @@
-class Pair { 
-    int node;
-    int price;
-    Pair(int node, int price) {
-        this.node = node;
-        this.price = price;
-    }
-}
-
-class Tuple {
-    int node;
-    int stop;
-    int price;
-    
-    Tuple(int node, int stop, int price) {
-        this.node = node;
-        this.stop = stop;
-        this.price = price;
-    }
-}
-
 class Solution {
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-          //creating adjacency list
-        ArrayList<ArrayList<Pair>> adjList = new ArrayList<>();
-        for(int i = 0; i < n; i++){
-            adjList.add(new ArrayList<>());
-        }
         
-        for(int i =0; i < flights.length; i++) {
-            adjList.get(flights[i][0]).add(new Pair(flights[i][1] , flights[i][2]));
-        }
+        int[] cost = new int[n];
+        Arrays.fill(cost, 100000000);
         
-        int[] distance = new int[n];
-        Arrays.fill(distance, Integer.MAX_VALUE);
+        cost[src] = 0;
         
-        PriorityQueue<Tuple> pq = new PriorityQueue<>((a,b) -> a.stop - b.stop);
-        pq.add(new Tuple(src, 0, 0));
-        distance[src] = 0;
-        
-        while(pq.size() > 0) {
-            int node = pq.peek().node;
-            int stops = pq.peek().stop;
-            int price = pq.peek().price;
-            pq.remove();
+        for(int i = 0; i <= k; i++) {
+            int[] temp = Arrays.copyOf(cost, n);
             
-            // We stop the process as soon as the limit for the stops is reached.
-            if(stops > k) continue;
-            
-            for(Pair neighbor : adjList.get(node)) {
-                int adjNode = neighbor.node;
-                int edgeW = neighbor.price;
+            for(int[] flight : flights) {
+                int flightSrc = flight[0];
+                int flightDest = flight[1];
+                int flightPrice = flight[2];
                 
-                // We only update the queue if the new calculated dist is
-                // less than the prev and the stops are also within limits.
-                if(distance[adjNode] > price + edgeW && stops <= k){
-                    distance[adjNode] = price + edgeW;
-                    pq.add(new Tuple(adjNode, stops + 1, distance[adjNode]));
-                }
+                if(cost[flightSrc] ==  100000000)
+                    continue;
+                
+                if(temp[flightDest] > cost[flightSrc ] + flightPrice)
+                    temp[flightDest] = cost[flightSrc ] + flightPrice;
             }
+            
+            cost = temp;
+            
         }
         
-        return (distance[dst] == Integer.MAX_VALUE? -1 : distance[dst]);
-
-        
+        return (cost[dst] == 100000000 ? -1 : cost[dst] );
     }
 }
