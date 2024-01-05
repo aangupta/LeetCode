@@ -10,6 +10,9 @@ class Pair {
 }
 class Solution {
     
+    //The farther from the theif we are, the safer we will be
+    //Need to find the shortest and safest path from grid[sx][sy] to grid[tx][ty] by travelling farthest from lion cells.
+   //and also keeping the track of the min safestest factor/ minimum ever distance between any cell and a theif in that path.
     private int findSafenessFactor(int[][] distance, int n) {
         int[][] visited = new int[n][n];
         for(int i = 0; i < n; i++) {
@@ -117,6 +120,7 @@ class Solution {
             }
             System.out.println();
         } */
+       
         
        return findSafenessFactor(distance, n);
     }
