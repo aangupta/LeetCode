@@ -23,7 +23,9 @@ class Node {
 
 class Solution {
     public Node connect(Node root) {
-        if(root == null) return root;
+        
+        if(root == null)
+            return null;
         
         Queue<Node> queue = new LinkedList<>();
         Node curr = root;
@@ -39,8 +41,10 @@ class Solution {
                 currNode.next = rightNode;
                 rightNode = currNode;
                 
-                if(currNode.right != null) queue.add(currNode.right);
-                if(currNode.left != null) queue.add(currNode.left);
+                if(currNode.right != null) 
+                    queue.add(currNode.right);
+                if(currNode.left != null)
+                    queue.add(currNode.left);
             }
         }
         
