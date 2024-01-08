@@ -18,12 +18,10 @@ class Solution {
     private int rangeSumBSTUtils(TreeNode root, int low, int high) {
         if(root == null) return 0;
         
-        int leftSum = 0, rightSum = 0;
+        if(root.val < low) return rangeSumBSTUtils(root.right, low, high); //excluding left subtree
+        if(root.val > high) return rangeSumBSTUtils(root.left, low, high); //excluding right subtree
         
-        leftSum = rangeSumBSTUtils(root.left, low, high);
-        rightSum += rangeSumBSTUtils(root.right, low, high);
-        
-        return (root.val >= low && root.val <= high ? root.val + leftSum + rightSum : leftSum + rightSum);
+        return root.val + rangeSumBSTUtils(root.right, low, high) + rangeSumBSTUtils(root.left, low, high);
     }
     public int rangeSumBST(TreeNode root, int low, int high) {
         return rangeSumBSTUtils(root, low, high);
