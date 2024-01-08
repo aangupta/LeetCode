@@ -1,5 +1,5 @@
 class Solution {
-    
+    //Using extra space O(nRow + nCol)
     private void markRow(int[][] temp, int row, int nRow, int nCol ) {
         for(int i = 0; i < nCol; i++) {
             temp[row][i] = 0;
@@ -15,27 +15,30 @@ class Solution {
         int nRow = matrix.length;
         int nCol = matrix[0].length;
         
-        int[][] temp = new int[nRow][nCol];
+        //this will store the index of row and col value, whoose value need to be zero
+        int[] row = new int[nRow];
+        int[] col = new int[nCol];
         
-        for(int[] arr : temp) {
-            Arrays.fill(arr, -1);
-        }
+        Arrays.fill(row, 0);
+        Arrays.fill(col, 0);
         
         for(int i = 0; i < nRow; i++) {
             for(int j = 0; j < nCol; j++) {
                 if(matrix[i][j] == 0) {
-                    markRow(temp, i, nRow, nCol);
-                    markCol(temp, j, nRow, nCol);
+                    row[i] = 1; 
+                    col[j] = 1;
                 }
             }
         }
         
         for(int i = 0; i < nRow; i++) {
-            for(int j = 0; j < nCol; j++) {
-                if(temp[i][j] == 0){
-                    matrix[i][j] = 0;
-                }
-            }
+            if(row[i] == 1)
+                markRow(matrix, i, nRow, nCol);
+        }
+        
+        for(int i = 0; i < nCol; i++) {
+            if(col[i] == 1)
+                markCol(matrix, i, nRow, nCol);
         }
     }
 }
