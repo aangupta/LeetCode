@@ -1,6 +1,7 @@
 class Solution {
   
-    //Optimal Solution using constant space
+    //TC O(nRow * nCol)  
+    //SC O(1)
     public void setZeroes(int[][] matrix) {
         int nRow = matrix.length;
         int nCol = matrix[0].length;
