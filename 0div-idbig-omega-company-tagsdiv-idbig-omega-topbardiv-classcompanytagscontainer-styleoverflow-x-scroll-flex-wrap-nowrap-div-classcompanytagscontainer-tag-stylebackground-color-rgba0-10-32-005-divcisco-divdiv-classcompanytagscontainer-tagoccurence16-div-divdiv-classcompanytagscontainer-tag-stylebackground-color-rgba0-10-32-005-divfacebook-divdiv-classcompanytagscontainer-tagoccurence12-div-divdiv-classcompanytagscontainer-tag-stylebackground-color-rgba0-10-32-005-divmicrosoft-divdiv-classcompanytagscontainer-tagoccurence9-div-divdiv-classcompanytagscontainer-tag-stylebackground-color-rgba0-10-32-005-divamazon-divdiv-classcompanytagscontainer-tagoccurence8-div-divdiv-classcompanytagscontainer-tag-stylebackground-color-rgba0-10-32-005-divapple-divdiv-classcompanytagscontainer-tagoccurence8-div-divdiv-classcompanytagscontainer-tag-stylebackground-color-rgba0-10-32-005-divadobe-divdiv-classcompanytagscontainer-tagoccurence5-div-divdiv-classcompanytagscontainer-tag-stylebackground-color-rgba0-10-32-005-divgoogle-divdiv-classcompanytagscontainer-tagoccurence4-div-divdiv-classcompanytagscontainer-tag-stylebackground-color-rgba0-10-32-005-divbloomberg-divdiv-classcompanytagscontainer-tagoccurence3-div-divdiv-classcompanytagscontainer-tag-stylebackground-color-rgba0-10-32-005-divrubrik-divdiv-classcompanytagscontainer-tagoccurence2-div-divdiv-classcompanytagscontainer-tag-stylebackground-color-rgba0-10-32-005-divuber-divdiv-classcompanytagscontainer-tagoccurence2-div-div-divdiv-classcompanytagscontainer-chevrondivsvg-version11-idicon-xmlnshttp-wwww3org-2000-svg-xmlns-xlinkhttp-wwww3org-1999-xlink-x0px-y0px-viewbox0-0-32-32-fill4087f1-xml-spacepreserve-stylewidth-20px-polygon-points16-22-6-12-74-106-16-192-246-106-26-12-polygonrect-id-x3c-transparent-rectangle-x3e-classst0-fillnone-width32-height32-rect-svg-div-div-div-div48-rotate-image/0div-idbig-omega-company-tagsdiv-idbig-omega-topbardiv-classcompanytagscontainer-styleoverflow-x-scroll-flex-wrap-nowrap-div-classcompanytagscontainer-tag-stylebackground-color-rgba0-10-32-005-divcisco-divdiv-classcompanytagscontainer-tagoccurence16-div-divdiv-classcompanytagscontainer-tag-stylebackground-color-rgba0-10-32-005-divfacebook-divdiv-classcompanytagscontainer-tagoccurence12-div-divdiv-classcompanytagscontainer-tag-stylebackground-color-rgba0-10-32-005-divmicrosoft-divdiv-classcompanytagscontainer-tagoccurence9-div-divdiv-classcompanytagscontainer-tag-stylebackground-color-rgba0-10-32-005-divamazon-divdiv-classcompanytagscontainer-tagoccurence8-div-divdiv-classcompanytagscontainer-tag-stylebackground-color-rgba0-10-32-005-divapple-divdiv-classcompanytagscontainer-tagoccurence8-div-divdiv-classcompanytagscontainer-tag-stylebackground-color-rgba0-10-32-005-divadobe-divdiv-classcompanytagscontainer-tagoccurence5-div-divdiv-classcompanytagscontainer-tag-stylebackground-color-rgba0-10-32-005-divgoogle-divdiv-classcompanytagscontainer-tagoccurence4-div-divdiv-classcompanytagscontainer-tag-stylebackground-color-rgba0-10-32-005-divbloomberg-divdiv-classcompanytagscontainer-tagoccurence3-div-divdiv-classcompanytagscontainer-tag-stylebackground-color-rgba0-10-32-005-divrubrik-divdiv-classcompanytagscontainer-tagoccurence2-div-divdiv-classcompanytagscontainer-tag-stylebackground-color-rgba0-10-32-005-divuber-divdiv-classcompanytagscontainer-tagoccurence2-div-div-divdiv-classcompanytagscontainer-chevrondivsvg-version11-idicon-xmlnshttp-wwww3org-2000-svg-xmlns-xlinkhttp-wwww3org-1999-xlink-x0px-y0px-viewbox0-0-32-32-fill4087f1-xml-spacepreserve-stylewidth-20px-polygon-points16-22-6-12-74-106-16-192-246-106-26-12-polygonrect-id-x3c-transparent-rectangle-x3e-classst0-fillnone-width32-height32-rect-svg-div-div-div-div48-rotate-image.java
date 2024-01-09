@@ -1,21 +1,31 @@
 class Solution {
+    
+    //Inplace
     public void rotate(int[][] matrix) {
         int nRow = matrix.length;
         int nCol = matrix[0].length;
         
-        int[][] temp = new int[nRow][nCol];
-        
-        int col = nCol -1;
+        //step 1 : Transpose the matrix
         for(int i = 0; i < nRow; i++) {
-            for(int j = 0; j < nCol; j++) {
-               temp[j][col] = matrix[i][j]; 
+            for(int j = i + 1; j < nCol; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
             }
-            col--;
+          
         }
         
-         for(int i = 0; i < nRow; i++) {
-            for(int j = 0; j < nCol; j++) {
-               matrix[i][j] = temp[i][j];
+        //step 2: flip the matrix horizontally
+        for(int i = 0; i < nRow; i++) {
+            int start = 0;
+            int end = nCol-1;
+            
+            while(start < end) {
+                int temp = matrix[i][start];
+                matrix[i][start] = matrix[i][end];
+                matrix[i][end] = temp;
+                start++;
+                end--;
             }
         }
     }
