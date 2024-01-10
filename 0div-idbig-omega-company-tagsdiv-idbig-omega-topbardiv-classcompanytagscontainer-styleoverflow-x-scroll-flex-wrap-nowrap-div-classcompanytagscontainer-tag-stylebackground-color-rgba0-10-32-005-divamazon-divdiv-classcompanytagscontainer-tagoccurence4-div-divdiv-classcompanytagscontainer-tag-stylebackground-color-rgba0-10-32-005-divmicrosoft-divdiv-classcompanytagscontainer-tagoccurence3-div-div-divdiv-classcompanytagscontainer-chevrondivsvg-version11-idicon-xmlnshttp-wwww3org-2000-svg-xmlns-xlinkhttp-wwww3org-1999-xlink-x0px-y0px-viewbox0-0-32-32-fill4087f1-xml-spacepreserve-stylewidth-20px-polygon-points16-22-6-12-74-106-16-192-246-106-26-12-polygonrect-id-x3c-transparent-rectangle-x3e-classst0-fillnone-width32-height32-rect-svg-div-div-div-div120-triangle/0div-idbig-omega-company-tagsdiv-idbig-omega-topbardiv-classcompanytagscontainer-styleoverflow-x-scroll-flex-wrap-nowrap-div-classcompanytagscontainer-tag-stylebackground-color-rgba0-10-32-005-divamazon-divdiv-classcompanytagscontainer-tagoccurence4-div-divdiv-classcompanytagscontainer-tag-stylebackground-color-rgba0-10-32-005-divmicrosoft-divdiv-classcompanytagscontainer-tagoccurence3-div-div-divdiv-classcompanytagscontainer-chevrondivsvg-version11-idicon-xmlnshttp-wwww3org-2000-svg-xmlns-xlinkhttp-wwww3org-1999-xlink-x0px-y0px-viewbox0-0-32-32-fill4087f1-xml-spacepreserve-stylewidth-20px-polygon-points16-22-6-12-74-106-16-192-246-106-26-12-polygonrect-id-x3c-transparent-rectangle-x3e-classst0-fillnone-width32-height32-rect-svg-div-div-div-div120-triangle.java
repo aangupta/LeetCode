@@ -17,9 +17,18 @@ class Solution {
         int n = triangle.size();
         int[][] dp = new int[n][n];
         
-        for(int[] row : dp)
-            Arrays.fill(row, -1);
+        for(int i = 0; i < n; i++)
+            dp[n-1][i] = triangle.get(n-1).get(i);
         
-        return minimumTotalUtils(0,0,triangle, dp);
+        for(int level = n-2; level >= 0; level--) {
+            for(int index = 0; index <= level; index++) {
+                int up = triangle.get(level).get(index) + dp[level + 1][index];
+                int diagonal = triangle.get(level).get(index) + dp[level + 1][index + 1];
+                
+                dp[level][index] = Math.min(up, diagonal);
+            }
+        }
+        
+        return dp[0][0];
     }
 }
