@@ -17,8 +17,15 @@ class Solution {
         int down = calculateMinimumHPUtils(row + 1, col, dungeon, dp);
         int right = calculateMinimumHPUtils(row, col + 1 , dungeon, dp);
         
-        int minHealthRequired = Math.min(down, right) - dungeon[row][col];
+        //suppose we want to enter in [row][col] cell , 
+        //we need two information before making any decision i.e entering [row][col] is better from [row][col+1] or from [row+1][col] ?
+        //which ever is having min min_health requirement will be preferred 
+        int minHealthRequired = Math.min(down, right);
         
+        //now knight need to fight in cell  [row][col] so he will either loose or gain health acc.to cell  [row][col] val is +ve or -ve.
+        minHealthRequired = minHealthRequired - dungeon[row][col];
+        
+        //if any point the health value of the knight is <= 0, he will die so return 1 in that case otherwise return the computed minHealthRequired
         return dp[row][col] = (minHealthRequired <= 0 ? 1 : minHealthRequired);
         
     }
