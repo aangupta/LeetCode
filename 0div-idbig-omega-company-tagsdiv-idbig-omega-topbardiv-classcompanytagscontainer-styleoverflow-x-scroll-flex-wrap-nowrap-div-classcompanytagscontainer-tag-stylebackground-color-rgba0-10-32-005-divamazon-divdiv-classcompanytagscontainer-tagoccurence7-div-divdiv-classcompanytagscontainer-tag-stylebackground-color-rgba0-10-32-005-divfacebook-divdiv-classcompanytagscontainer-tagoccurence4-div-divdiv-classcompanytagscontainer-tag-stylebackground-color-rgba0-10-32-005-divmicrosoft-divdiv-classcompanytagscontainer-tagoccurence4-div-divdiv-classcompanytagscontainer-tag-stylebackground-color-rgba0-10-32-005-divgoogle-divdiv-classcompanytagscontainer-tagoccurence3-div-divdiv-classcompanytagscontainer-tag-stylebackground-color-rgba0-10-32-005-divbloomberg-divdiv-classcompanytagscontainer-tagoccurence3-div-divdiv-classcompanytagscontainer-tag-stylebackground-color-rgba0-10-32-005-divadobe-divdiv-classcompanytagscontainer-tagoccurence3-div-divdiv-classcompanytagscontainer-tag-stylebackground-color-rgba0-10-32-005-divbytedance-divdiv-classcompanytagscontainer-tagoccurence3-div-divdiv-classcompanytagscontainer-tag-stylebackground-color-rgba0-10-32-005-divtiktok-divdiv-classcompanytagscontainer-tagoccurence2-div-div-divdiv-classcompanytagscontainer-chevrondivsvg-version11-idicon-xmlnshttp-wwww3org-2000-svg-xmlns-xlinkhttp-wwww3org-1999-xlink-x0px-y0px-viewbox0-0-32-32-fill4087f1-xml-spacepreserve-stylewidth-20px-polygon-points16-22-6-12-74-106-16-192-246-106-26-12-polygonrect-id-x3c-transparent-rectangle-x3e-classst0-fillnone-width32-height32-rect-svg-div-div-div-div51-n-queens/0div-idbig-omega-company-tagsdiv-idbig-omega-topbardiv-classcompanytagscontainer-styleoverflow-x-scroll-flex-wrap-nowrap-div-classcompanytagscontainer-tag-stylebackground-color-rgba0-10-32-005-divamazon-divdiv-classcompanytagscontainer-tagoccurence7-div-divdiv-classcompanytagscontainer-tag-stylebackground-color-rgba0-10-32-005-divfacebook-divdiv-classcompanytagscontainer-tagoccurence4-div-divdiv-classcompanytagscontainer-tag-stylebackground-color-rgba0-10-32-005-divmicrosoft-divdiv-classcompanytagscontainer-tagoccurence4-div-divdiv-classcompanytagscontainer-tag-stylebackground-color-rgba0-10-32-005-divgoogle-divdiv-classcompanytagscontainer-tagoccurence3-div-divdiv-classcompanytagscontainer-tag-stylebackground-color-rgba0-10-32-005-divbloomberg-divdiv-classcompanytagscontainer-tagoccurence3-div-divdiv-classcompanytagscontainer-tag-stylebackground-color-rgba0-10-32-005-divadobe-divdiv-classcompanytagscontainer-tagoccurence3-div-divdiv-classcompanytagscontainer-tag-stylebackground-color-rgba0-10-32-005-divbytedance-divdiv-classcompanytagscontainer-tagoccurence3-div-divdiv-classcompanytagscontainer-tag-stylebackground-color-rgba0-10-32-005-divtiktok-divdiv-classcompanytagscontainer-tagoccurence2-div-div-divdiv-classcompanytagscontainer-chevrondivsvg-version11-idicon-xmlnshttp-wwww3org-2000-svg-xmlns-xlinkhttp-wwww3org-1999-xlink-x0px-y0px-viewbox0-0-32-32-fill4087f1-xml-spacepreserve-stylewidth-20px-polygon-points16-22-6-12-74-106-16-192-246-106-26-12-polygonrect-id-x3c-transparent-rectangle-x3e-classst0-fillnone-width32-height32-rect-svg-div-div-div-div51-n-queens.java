@@ -1,7 +1,6 @@
 class Solution {
     
-    //traversing row wise
-    
+    //traversing col wise
     private List<String> construct(char[][] board) {
         List<String> res = new ArrayList<>();
         
@@ -14,9 +13,9 @@ class Solution {
     
     private boolean isValid(int row, int col, int n, char[][] board) {
         
-        //checking vertically up
-        for(int i = 0; i <row; i++) {
-            if(board[i][col] =='Q') {
+        //checking horizontally left
+        for(int i = 0; i <col; i++) {
+            if(board[row][i] =='Q') {
                  return false;
             }    
         }
@@ -28,8 +27,8 @@ class Solution {
             }
         }
         
-        //checking right upper diagonal
-        for(int r = row, c = col; r >=0 && c < n; r--, c++) {
+        //checking left lower diagonal
+        for(int r = row, c = col; r < n && c >= 0; r++, c--) {
             if(board[r][c] == 'Q') {
                 return false;
             }
@@ -38,20 +37,19 @@ class Solution {
         return true;
         
     }
-    private void solveNQueensUtils(int row, int n, char[][] board, List<List<String>> result) {
+    private void solveNQueensUtils(int col, int n, char[][] board, List<List<String>> result) {
         
         //base case
-        if(row == n) {
+        if(col == n) {
             result.add(construct(board));
             return;
         }
         
-        for(int col = 0; col < n; col++) {
-            
+        for(int row = 0; row < n; row++) {
             if(board[row][col] == '.') {
                 if(isValid(row, col, n, board) == true) {
                     board[row][col] = 'Q';
-                    solveNQueensUtils(row + 1, n, board, result);
+                    solveNQueensUtils(col + 1, n, board, result);
                     board[row][col] = '.';     //backtrack
                 }
             }
