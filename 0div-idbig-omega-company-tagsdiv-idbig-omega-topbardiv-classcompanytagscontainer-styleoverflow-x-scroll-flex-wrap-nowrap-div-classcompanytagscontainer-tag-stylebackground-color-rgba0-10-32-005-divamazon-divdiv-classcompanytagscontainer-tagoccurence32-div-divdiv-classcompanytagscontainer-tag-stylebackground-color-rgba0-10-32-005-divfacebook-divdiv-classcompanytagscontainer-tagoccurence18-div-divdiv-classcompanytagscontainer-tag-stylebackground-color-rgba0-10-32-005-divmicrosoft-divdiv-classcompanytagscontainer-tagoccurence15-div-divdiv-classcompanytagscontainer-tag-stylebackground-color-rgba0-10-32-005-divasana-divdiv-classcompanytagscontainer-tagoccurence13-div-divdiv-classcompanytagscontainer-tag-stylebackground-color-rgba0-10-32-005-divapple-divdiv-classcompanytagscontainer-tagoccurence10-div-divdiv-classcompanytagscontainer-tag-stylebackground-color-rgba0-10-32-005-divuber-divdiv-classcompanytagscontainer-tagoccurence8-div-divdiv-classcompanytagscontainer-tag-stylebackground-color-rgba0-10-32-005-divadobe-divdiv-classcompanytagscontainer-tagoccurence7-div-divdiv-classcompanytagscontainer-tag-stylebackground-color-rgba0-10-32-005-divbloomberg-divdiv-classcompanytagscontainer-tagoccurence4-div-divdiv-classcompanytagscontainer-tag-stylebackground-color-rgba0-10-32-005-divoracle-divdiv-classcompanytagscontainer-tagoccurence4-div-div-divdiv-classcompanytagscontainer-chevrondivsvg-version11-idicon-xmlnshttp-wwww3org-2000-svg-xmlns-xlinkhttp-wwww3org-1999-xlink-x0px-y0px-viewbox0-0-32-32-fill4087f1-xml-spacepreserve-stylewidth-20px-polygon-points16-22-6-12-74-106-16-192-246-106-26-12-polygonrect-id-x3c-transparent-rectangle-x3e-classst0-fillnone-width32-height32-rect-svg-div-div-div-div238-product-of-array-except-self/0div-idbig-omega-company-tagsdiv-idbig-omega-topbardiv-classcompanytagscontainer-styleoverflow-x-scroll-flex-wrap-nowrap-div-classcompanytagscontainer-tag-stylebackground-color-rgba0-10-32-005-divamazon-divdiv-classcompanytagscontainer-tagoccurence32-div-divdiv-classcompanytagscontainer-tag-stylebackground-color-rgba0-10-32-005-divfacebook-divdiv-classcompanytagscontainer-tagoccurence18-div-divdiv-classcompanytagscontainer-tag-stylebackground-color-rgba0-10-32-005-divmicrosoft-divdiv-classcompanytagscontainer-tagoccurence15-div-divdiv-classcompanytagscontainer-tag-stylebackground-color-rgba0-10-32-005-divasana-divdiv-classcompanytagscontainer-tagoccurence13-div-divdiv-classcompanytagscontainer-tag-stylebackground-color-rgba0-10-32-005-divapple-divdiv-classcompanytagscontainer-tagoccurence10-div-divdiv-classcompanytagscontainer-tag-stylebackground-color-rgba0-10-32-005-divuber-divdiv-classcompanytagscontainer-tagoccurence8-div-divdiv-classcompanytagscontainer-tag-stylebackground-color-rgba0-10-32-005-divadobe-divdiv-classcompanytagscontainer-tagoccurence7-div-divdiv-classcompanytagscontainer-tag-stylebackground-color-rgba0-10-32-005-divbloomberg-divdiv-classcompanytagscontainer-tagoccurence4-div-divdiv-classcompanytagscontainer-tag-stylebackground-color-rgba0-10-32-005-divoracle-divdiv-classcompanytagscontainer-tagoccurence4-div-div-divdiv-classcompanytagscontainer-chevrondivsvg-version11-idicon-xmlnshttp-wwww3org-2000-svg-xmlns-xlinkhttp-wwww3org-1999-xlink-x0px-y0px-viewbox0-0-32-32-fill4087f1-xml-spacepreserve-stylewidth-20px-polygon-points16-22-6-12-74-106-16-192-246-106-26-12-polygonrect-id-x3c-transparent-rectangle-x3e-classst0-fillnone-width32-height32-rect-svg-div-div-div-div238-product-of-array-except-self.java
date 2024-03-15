@@ -1,36 +1,28 @@
 class Solution {
+    //using extra space without using division
     public int[] productExceptSelf(int[] nums) {
-        int totalProduct = 1;
+        int n = nums.length;
+        int[] leftProduct = new int[n];
+        int[] rightProduct = new int[n];
+        int[] result = new int[n];
         
-        int countOfZero = 0;
-        int index = -1;
-        for(int i = 0; i < nums.length; i++) {
-            
-            if(nums[i] == 0) {
-                countOfZero++;
-                index = i;
-                continue;
-            }
-            
-            totalProduct *= nums[i];
+        leftProduct[0] = 1;
+        rightProduct[n-1] = 1;
+        
+        //computing left product
+        for(int i = 1; i < n; i++) {
+            leftProduct[i] = leftProduct[i-1] * nums[i-1];
         }
         
-        int[] result = new int[nums.length];
-        
-        if(countOfZero > 1) return result;
-        
-        if(countOfZero == 1) {
-            result[index] = totalProduct;
-            return result;
+        //computing right product
+        for(int i = n-2; i >=0; i--) {
+            rightProduct[i] = rightProduct[i+1] * nums[i+1];
         }
         
-        for(int i = 0; i < nums.length; i++) {
-            result[i] = totalProduct / nums[i];
+        for(int i = 0; i < n; i++) {
+            result[i] = leftProduct[i] * rightProduct[i];
         }
         
         return result;
-        
     }
-    
-    
 }
