@@ -1,5 +1,5 @@
 class Solution {
-    //modified the input array
+    // Solution 1 modified the input array
     public int matrixScore(int[][] grid) {
         int noRows = grid.length;
         int noCols = grid[0].length;
