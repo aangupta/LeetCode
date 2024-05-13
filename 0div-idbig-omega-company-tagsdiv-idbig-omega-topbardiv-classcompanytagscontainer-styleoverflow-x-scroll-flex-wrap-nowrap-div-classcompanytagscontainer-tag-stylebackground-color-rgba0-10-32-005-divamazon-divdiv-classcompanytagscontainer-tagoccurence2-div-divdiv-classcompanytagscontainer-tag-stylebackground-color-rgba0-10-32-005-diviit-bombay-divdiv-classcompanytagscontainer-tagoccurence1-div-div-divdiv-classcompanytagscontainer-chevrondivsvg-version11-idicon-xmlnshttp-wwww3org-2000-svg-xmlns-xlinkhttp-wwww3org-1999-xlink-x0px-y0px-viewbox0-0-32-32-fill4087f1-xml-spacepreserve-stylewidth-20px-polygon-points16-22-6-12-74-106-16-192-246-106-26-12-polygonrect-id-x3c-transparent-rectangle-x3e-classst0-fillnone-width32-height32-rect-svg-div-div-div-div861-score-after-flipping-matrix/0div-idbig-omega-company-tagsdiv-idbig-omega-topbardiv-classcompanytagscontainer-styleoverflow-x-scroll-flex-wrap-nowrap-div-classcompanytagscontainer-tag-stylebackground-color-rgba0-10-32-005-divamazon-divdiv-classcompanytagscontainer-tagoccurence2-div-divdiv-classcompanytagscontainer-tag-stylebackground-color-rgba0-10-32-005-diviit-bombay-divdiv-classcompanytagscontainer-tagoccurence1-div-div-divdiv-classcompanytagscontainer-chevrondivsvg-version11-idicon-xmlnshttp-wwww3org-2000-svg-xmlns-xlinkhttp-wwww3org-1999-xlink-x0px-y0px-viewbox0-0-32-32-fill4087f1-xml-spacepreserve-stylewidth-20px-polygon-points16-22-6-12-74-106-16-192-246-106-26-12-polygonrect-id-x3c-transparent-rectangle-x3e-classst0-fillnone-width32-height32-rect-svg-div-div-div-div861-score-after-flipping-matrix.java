@@ -1,45 +1,34 @@
 class Solution {
-    // Solution 1 modified the input array
+    // Solution 2 without modifying the input array
     public int matrixScore(int[][] grid) {
         int noRows = grid.length;
         int noCols = grid[0].length;
         
-        //traverse the first col and if the MSB value is zero flip it to 1
-        for(int row = 0; row < noRows; row++) {
-            if(grid[row][0] == 0) {
-                
-                //flip that row
-                for(int col = 0; col < noCols; col++) {
-                    grid[row][col] = 1 - grid[row][col]; //flipping
-                }
-            }
-        }
-        
-        //traverse through col = 1 to noCols and if countZeros > countOnes --> flip that col
-        for(int col = 1; col < noCols; col++) {
-            
-            int countZero = 0;
-            for(int row = 0; row < noRows; row++) {
-                if(grid[row][col] == 0)
-                    countZero++;
-            }
-            
-            int countOne = noRows - countZero;
-            if(countZero > countOne) {
-                //flip that col
-                for(int row = 0; row < noRows; row++) {
-                    grid[row][col] = 1 - grid[row][col];
-                }
-            }
-        }
-        
         int score = 0;
-        for(int row = 0; row < noRows; row++) {
-            for(int col = 0; col < noCols; col++) {
-                int value = grid[row][col] * (1 << noCols - col - 1);  //(1 << noCols - col - 1) -> place value --> pwoer(2, noCols - col - 1)
-                score += value;
+        
+        //to get the max number, the msb of each binary number(represented by each row) should be one
+        //here we are assuming col 0 -> all the values are 1
+        
+        //MSB -> 2^noCols-1
+        score = noRows * (1 << noCols -1);
+        
+        //now we need to check the rest of the cols
+        
+        for(int col = 1; col < noCols; col++) {
+            int countSameBits = 0; //no of 1s
+            for(int row = 0; row < noRows; row++) {
+                if(grid[row][0] == grid[row][col])   //tricky part
+                    countSameBits++;
             }
+            int countOnes = countSameBits;
+            int countZeros = noRows - countOnes;
+            
+            int ones = Math.max(countOnes, countZeros);
+            
+            score += (1 << noCols - col - 1) * ones;
+            
         }
+        
         
         return score; 
         
